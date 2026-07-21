@@ -5,11 +5,16 @@ let contenido = "";
 document.addEventListener('DOMContentLoaded', function() {
   
   // 1. INICIALIZACIÓN DE COMPONENTES INTERNOS DE MATERIALIZE
-  const menus = document.querySelectorAll('.side-menu');
-  M.Sidenav.init(menus, { edge: 'right' });
-  
-  const forms = document.querySelectorAll('.side-form');
-  M.Sidenav.init(forms, { edge: 'left' });
+  // Inicialización explícita por ID para asegurar que coincidan con los data-target
+  const menuElem = document.getElementById('side-menu');
+  if (menuElem) {
+    M.Sidenav.init(menuElem, { edge: 'right' });
+  }
+
+  const formElem = document.getElementById('side-form');
+  if (formElem) {
+    M.Sidenav.init(formElem, { edge: 'left' });
+  }
 
   // 2. VARIABLES DE CONTROL DE LA CÁMARA
   let streaming = false;
@@ -38,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .catch((error) => {
           console.error("Error al acceder a la cámara: ", error);
+          M.toast({ html: 'No se pudo acceder a la cámara' });
       });
     });
   }
@@ -62,15 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // FUNCIÓN PARA DESACTIVAR Y APAGAR LA CÁMARA COMPLETAMENTE (Optimización de recursos)
+  // FUNCIÓN PARA DESACTIVAR Y APAGAR LA CÁMARA COMPLETAMENTE
   function apagarCamara() {
     if (camaraStream) {
-      // Detiene todos los tracks de hardware abiertos (apaga el sensor físico)
       camaraStream.getTracks().forEach(track => track.stop());
       camaraStream = null;
     }
     if (video) {
-      video.srcObject = null; // Limpia el flujo visual del visor
+      video.srcObject = null;
     }
     streaming = false;
   }
@@ -84,15 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
       contexto.drawImage(video, 0, 0, width, height);
       const fotoCompleta = canvas.toDataURL("image/png");
       
-      // Para la vista previa local en el formulario usamos la URL completa
       const preview = document.getElementById("fotoPreview");
       if (preview) preview.setAttribute("src", fotoCompleta);
       
-      // Guardamos la cadena limpia sin el prefijo repetido y removemos espacios en blanco
       const base64Puro = fotoCompleta.replace("data:image/png;base64,", "").trim();
       document.getElementById("foto").value = base64Puro;
 
-      // Desactivamos la cámara inmediatamente para no gastar batería de manera innecesaria
       apagarCamara();
     } else {
       limpiarFoto();
@@ -112,31 +114,27 @@ document.addEventListener('DOMContentLoaded', function() {
     apagarCamara();
   }
 
-  // 4. ENVÍO UNIFICADO A FIRESTORE (Evita que los datos se separen en registros distintos)
+  // 4. ENVÍO UNIFICADO A FIRESTORE
   if (formularioAgregar) {
     formularioAgregar.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Recolectamos todos los campos del formulario en un único objeto estructurado
       const platilloNuevo = {
         nombre: document.getElementById('title').value,       
         ingredientes: document.getElementById('ingredients').value, 
         precio: document.getElementById('price').value,
-        foto: document.getElementById('foto').value.trim() || "" // String Base64 limpio obtenido de la cámara
+        foto: document.getElementById('foto').value.trim() || ""
       };
 
-      // Un solo registro atómico en la base de datos
       db.collection("platillos").add(platilloNuevo)
         .then(() => {
-          alert("¡Platillo completo agregado con éxito!");
+          M.toast({ html: '¡Platillo agregado con éxito!' });
           formularioAgregar.reset();
           
-          // Limpieza de estados multimedia del formulario
           document.getElementById('foto').value = "";
           const preview = document.getElementById('fotoPreview');
           if (preview) preview.setAttribute("src", "");
 
-          // Cierre seguro del componente lateral de Materialize
           const elementoForm = document.getElementById('side-form'); 
           const instanciaForm = M.Sidenav.getInstance(elementoForm);
           if (instanciaForm) {
@@ -145,38 +143,31 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch((error) => {
           console.error("Error al subir a Firebase: ", error);
-          alert("Hubo un error al conectar con Firebase.");
+          M.toast({ html: 'Error al conectar con Firebase' });
         });
     });
   }
 });
 
 // =========================================================================
-// 5. FUNCIONES DE RENDERIZADO VISUAL EN TIEMPO REAL (Sincronizado con la clase)
+// 5. FUNCIONES DE RENDERIZADO VISUAL EN TIEMPO REAL
 // =========================================================================
 function mostrarPlatillo(platillo, id) {
   const contenedor = document.querySelector(".recipes"); 
   if (!contenedor) return;
 
-  // Prevenir duplicados visuales en la interfaz
   if (contenedor.querySelector(`[data-id="${id}"]`)) return;
 
-  // Saltarse renderizados vacíos o registros de pruebas corruptos
   if (!platillo.nombre && !platillo.precio) return;
 
-  // Variable de imagen (Línea 13 de los apuntes de tu clase)
   let fotoPlatillo;
 
-  // Condicional de validación (Línea 14 de los apuntes de tu clase)
   if (platillo.foto && platillo.foto.trim() !== "") {
-    // Concatenamos el prefijo de forma continua eliminando espacios para asegurar el renderizado
     fotoPlatillo = `data:image/png;base64,${platillo.foto.trim()}`;
   } else {
-    // Fallback de respaldo por si el platillo no cuenta con captura de cámara
     fotoPlatillo = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&auto=format&fit=crop&q=60"; 
   }
 
-  // Asignación de contenido (Estructura exacta solicitada en la materia)
   contenido = `
   <div class="card-panel recipe white row" id="${id}" data-id="${id}">
     <img src="${fotoPlatillo}" height="100px" width="100px" style="object-fit: cover; border-radius: 8px; float: left; margin-right: 15px;">
