@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Food Ninja</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="grey lighten-4">
+
+  <nav class="z-depth-0 white">
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo green-text text-darken-2" style="font-weight: bold;">Food Ninja</a>
+      <span class="right grey-text text-darken-1">
+        <i class="material-icons sidenav-trigger" data-target="side-form" style="cursor: pointer; margin-right: 15px;">add_box</i>
+        <i class="material-icons sidenav-trigger" data-target="side-menu" style="cursor: pointer;">menu</i>
+      </span>
+    </div>
+  </nav>
+
+  <ul id="side-menu" class="sidenav side-menu">
+    <li><a class="subheader">UberEatsCUDEC</a></li>
+    <li><a href="/" class="waves-effect"><i class="material-icons">home</i>Inicio</a></li>
+    <li><a href="/pages/pedidos.html" class="waves-effect"><i class="material-icons">shopping_basket</i>Generar Pedido</a></li>
+    <li><a href="/pages/about.html" class="waves-effect"><i class="material-icons">info</i>Acerca de</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="/pages/contact.html" class="waves-effect"><i class="material-icons">mail_outline</i>Contacto</a></li>
+  </ul>
+
+  <div id="side-form" class="sidenav side-form" style="padding: 20px; width: 300px;">
+    <form id="formularioPlatillo" class="add-recipe">
+      <h5>Agregar Platillo</h5>
+      <div class="divider" style="margin-bottom: 25px;"></div>
+
+      <input type="hidden" id="foto" value="">
+
+      <div class="input-field" style="margin-bottom: 30px;">
+        <input placeholder="ejemplo: Pizza" id="title" type="text" class="validate" required>
+        <label for="title" class="active">Nombre del Platillo</label>
+      </div>
+
+      <div class="input-field" style="margin-bottom: 30px;">
+        <input placeholder="ejemplo: Tofu, mushroom, garlic" id="ingredients" type="text" class="validate" required>
+        <label for="ingredients" class="active">Ingredientes</label>
+      </div>
+
+      <div class="input-field" style="margin-bottom: 30px;">
+        <input placeholder="ejemplo: 140" id="price" type="number" step="0.01" class="validate" required>
+        <label for="price" class="active">Precio ($ MXN)</label>
+      </div>
+
+      <div class="input-field center" style="margin-bottom: 25px;">
+        <button type="submit" class="btn-small green waves-effect waves-light">Agregar</button>
+      </div>
+    </form>
+
+    <div class="divider" style="margin: 20px 0;"></div>
+
+    <div class="center">
+      <button id="btnFoto" type="button" class="btn-small orange darken-2 waves-effect waves-light" style="margin-bottom: 5px;">Iniciar Cámara</button>
+      
+      <button id="btnCapturar" type="button" class="btn-small red waves-effect waves-light" style="margin-bottom: 15px;">Tomar Foto</button>
+      
+      <div id="camara" style="margin-bottom: 15px;">
+        <video id="video" style="width: 100%; max-width: 260px; background-color: #000; border-radius: 4px; cursor: pointer;" autoplay playsinline>No hay video disponible</video>
+      </div>
+
+      <canvas id="canvas" style="display: none;"></canvas>
+
+      <div id="salida" style="margin-bottom: 15px;">
+        <img id="fotoPreview" src="" alt="Foto del platillo" style="width: 100%; max-width: 260px; border-radius: 4px; border: 1px dashed #ccc; display: block; margin: 0 auto;">
+      </div>
+    </div>
+  </div>
+
+  <div class="container grey-text text-darken-1 section">
+    <h4 class="center-align" style="margin-bottom: 30px; font-weight: 300;">Menú del Día</h4>
+    <div class="recipes"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-firestore.js"></script>
+  <script src="/js/firebase.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script src="/js/index.js"></script>
+  <script src="/js/db.js"></script>
+
+</body>
+</html>
