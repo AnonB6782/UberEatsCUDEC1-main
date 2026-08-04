@@ -47,12 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const btnCapturar = document.getElementById('btnCapturar');
   const formularioAgregar = document.querySelector(".add-recipe") || document.querySelector("form"); 
 
-  // 3. LÓGICA PARA ENCENDER LA CÁMARA
+  // 3. LÓGICA PARA ENCENDER LA CÁMARA TRASERA
   if (bntFoto) {
     bntFoto.addEventListener("click", function() {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
-            video: true,
+            video: {
+              facingMode: {
+                ideal: "environment"
+              }
+            },
             audio: false
         })
         .then((stream) => {
