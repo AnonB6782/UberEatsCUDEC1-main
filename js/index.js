@@ -4,47 +4,69 @@ let contenido = "";
 // UN SOLO DOMCONTENTLOADED PARA EVITAR ENVIOS DUPLICADOS O DOCUMENTOS SEPARADOS
 document.addEventListener('DOMContentLoaded', function() {
   
-  // 1. INICIALIZACIÓN DE COMPONENTES INTERNOS DE MATERIALIZE
-  // Inicialización explícita por ID para asegurar que coincidan con los data-target
-  const menuElem = document.getElementById('side-menu');
-  if (menuElem) {
-    M.Sidenav.init(menuElem, { edge: 'right' });
+  // 1. INICIALIZAR INSTANCIAS SIDENAV DE MATERIALIZE
+  const sideMenuElem = document.getElementById('side-menu');
+  const sideFormElem = document.getElementById('side-form');
+
+  let instanceMenu = null;
+  let instanceForm = null;
+
+  if (sideMenuElem && typeof M !== 'undefined') {
+    instanceMenu = M.Sidenav.init(sideMenuElem, { edge: 'right' });
   }
 
-  const formElem = document.getElementById('side-form');
-  if (formElem) {
-    M.Sidenav.init(formElem, { edge: 'left' });
+  if (sideFormElem && typeof M !== 'undefined') {
+    instanceForm = M.Sidenav.init(sideFormElem, { edge: 'left' });
   }
+
+  // Listener manual de respaldo para asegurar la apertura
+  document.querySelectorAll('.sidenav-trigger').forEach(trigger => {
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('data-target');
+
+      if (targetId === 'side-menu' && instanceMenu) {
+        instanceMenu.open();
+      } else if (targetId === 'side-form' && instanceForm) {
+        if (instanceMenu) instanceMenu.close();
+        instanceForm.open();
+      }
+    });
+  });
 
   // 2. VARIABLES DE CONTROL DE LA CÁMARA
   let streaming = false;
   const width = 320;
   let height = 0;
-  let camaraStream = null; // Guarda el flujo activo para poder apagarlo
+  let camaraStream = null;
 
   // Enlaces a elementos HTML por ID
   const video = document.getElementById('video');
   const canvas = document.getElementById('canvas');
   const bntFoto = document.getElementById('btnFoto');
   const btnCapturar = document.getElementById('btnCapturar');
-  const formularioAgregar = document.querySelector(".add-recipe"); 
+  const formularioAgregar = document.querySelector(".add-recipe") || document.querySelector("form"); 
 
   // 3. LÓGICA PARA ENCENDER LA CÁMARA
   if (bntFoto) {
     bntFoto.addEventListener("click", function() {
-      navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: false
-      })
-      .then((stream) => {
-          camaraStream = stream; // Guardamos el stream actual en la variable controladora
-          video.srcObject = stream;
-          video.play();
-      })
-      .catch((error) => {
-          console.error("Error al acceder a la cámara: ", error);
-          M.toast({ html: 'No se pudo acceder a la cámara' });
-      });
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        })
+        .then((stream) => {
+            camaraStream = stream;
+            if (video) {
+              video.srcObject = stream;
+              video.play();
+            }
+        })
+        .catch((error) => {
+            console.error("Error al acceder a la cámara: ", error);
+            M.toast({ html: 'No se pudo acceder a la cámara', classes: 'rounded red' });
+        });
+      }
     });
   }
 
@@ -60,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Capturar foto al oprimir el botón físico
+  // Capturar foto al oprimir el botón
   if (btnCapturar) {
     btnCapturar.addEventListener("click", (e) => {
       e.preventDefault();
@@ -68,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // FUNCIÓN PARA DESACTIVAR Y APAGAR LA CÁMARA COMPLETAMENTE
+  // FUNCIÓN PARA APAGAR LA CÁMARA COMPLETAMENTE
   function apagarCamara() {
     if (camaraStream) {
       camaraStream.getTracks().forEach(track => track.stop());
@@ -80,8 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
     streaming = false;
   }
 
-  // Función interna para procesar la imagen a Base64 sin prefijos ni espacios
+  // Procesar la imagen a Base64
   function tomarFoto() {
+    if (!canvas || !video) return;
     const contexto = canvas.getContext("2d");
     if (width && height) {
       canvas.width = width;
@@ -93,7 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (preview) preview.setAttribute("src", fotoCompleta);
       
       const base64Puro = fotoCompleta.replace("data:image/png;base64,", "").trim();
-      document.getElementById("foto").value = base64Puro;
+      const inputFoto = document.getElementById("foto");
+      if (inputFoto) inputFoto.value = base64Puro;
 
       apagarCamara();
     } else {
@@ -101,8 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Función interna para limpiar estados de captura
+  // Limpiar estados de captura
   function limpiarFoto() {
+    if (!canvas) return;
     const contexto = canvas.getContext("2d");
     contexto.fillStyle = "#AAA"; 
     contexto.fillRect(0, 0, canvas.width, canvas.height); 
@@ -110,41 +135,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const fotoFinal = canvas.toDataURL("image/png");
     const preview = document.getElementById("fotoPreview");
     if (preview) preview.setAttribute("src", fotoFinal);
-    document.getElementById("foto").value = "";
+    
+    const inputFoto = document.getElementById("foto");
+    if (inputFoto) inputFoto.value = "";
+    
     apagarCamara();
   }
 
-  // 4. ENVÍO UNIFICADO A FIRESTORE
+  // 4. ENVÍO ÚNICO A FIRESTORE
   if (formularioAgregar) {
     formularioAgregar.addEventListener("submit", (e) => {
       e.preventDefault();
 
+      const inputTitle = document.getElementById('title');
+      const inputIngredients = document.getElementById('ingredients');
+      const inputPrice = document.getElementById('price');
+      const inputFoto = document.getElementById('foto');
+
       const platilloNuevo = {
-        nombre: document.getElementById('title').value,       
-        ingredientes: document.getElementById('ingredients').value, 
-        precio: document.getElementById('price').value,
-        foto: document.getElementById('foto').value.trim() || ""
+        nombre: inputTitle ? inputTitle.value.trim() : "",       
+        ingredientes: inputIngredients ? inputIngredients.value.trim() : "", 
+        precio: inputPrice ? parseFloat(inputPrice.value) || 0 : 0,
+        foto: inputFoto ? inputFoto.value.trim() : ""
       };
 
-      db.collection("platillos").add(platilloNuevo)
-        .then(() => {
-          M.toast({ html: '¡Platillo agregado con éxito!' });
-          formularioAgregar.reset();
-          
-          document.getElementById('foto').value = "";
-          const preview = document.getElementById('fotoPreview');
-          if (preview) preview.setAttribute("src", "");
+      if (typeof db !== 'undefined') {
+        db.collection("platillos").add(platilloNuevo)
+          .then(() => {
+            M.toast({ html: '¡Platillo agregado con éxito!', classes: 'rounded green' });
+            formularioAgregar.reset();
+            
+            if (inputFoto) inputFoto.value = "";
+            const preview = document.getElementById('fotoPreview');
+            if (preview) preview.setAttribute("src", "");
 
-          const elementoForm = document.getElementById('side-form'); 
-          const instanciaForm = M.Sidenav.getInstance(elementoForm);
-          if (instanciaForm) {
-            instanciaForm.close();
-          }
-        })
-        .catch((error) => {
-          console.error("Error al subir a Firebase: ", error);
-          M.toast({ html: 'Error al conectar con Firebase' });
-        });
+            const elementoForm = document.getElementById('side-form'); 
+            if (elementoForm && typeof M !== 'undefined') {
+              const instanciaForm = M.Sidenav.getInstance(elementoForm);
+              if (instanciaForm) instanciaForm.close();
+            }
+          })
+          .catch((error) => {
+            console.error("Error al subir a Firebase: ", error);
+            M.toast({ html: 'Error al conectar con Firebase', classes: 'rounded red' });
+          });
+      }
     });
   }
 });
@@ -156,30 +191,37 @@ function mostrarPlatillo(platillo, id) {
   const contenedor = document.querySelector(".recipes"); 
   if (!contenedor) return;
 
+  // Prevenir tarjetas duplicadas en el DOM
   if (contenedor.querySelector(`[data-id="${id}"]`)) return;
 
+  // Filtrar documentos vacíos de Firestore
   if (!platillo.nombre && !platillo.precio) return;
 
   let fotoPlatillo;
 
+  // Detectar si la foto es Base64 o una URL estándar
   if (platillo.foto && platillo.foto.trim() !== "") {
-    fotoPlatillo = `data:image/png;base64,${platillo.foto.trim()}`;
+    if (platillo.foto.startsWith("http") || platillo.foto.startsWith("img/")) {
+      fotoPlatillo = platillo.foto;
+    } else {
+      fotoPlatillo = `data:image/png;base64,${platillo.foto.trim()}`;
+    }
   } else {
     fotoPlatillo = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&auto=format&fit=crop&q=60"; 
   }
 
   contenido = `
   <div class="card-panel recipe white row" id="${id}" data-id="${id}">
-    <img src="${fotoPlatillo}" height="100px" width="100px" style="object-fit: cover; border-radius: 8px; float: left; margin-right: 15px;">
+    <img src="${fotoPlatillo}" height="100px" width="100px" style="object-fit: cover; border-radius: 8px; float: left; margin-right: 15px;" alt="Platillo">
     <div class="recipe-details">
         <div class="recipe-title" style="font-weight: bold; font-size: 1.2rem;">
-          ${platillo.nombre}
+          ${platillo.nombre || 'Sin título'}
         </div>
         <div class="recipe-ingredients" style="color: #757575;">
-          ${platillo.ingredientes}
+          ${platillo.ingredientes || 'Sin ingredientes'}
         </div>
         <div class="recipe-price" style="font-weight: bold; color: #2e7d32; font-size: 1.1rem;">
-          $${platillo.precio} MXN
+          $${platillo.precio || 0} MXN
         </div>
     </div>
     <div class="recipe-delete" style="float: right; cursor: pointer;">
@@ -194,15 +236,19 @@ function mostrarPlatillo(platillo, id) {
 function actualizarPlatillo(platillo, id) {
   let tarjeta = document.getElementById(`${id}`);
   if (tarjeta) {
-    tarjeta.querySelector(".recipe-title").innerHTML = platillo.nombre;
-    tarjeta.querySelector(".recipe-ingredients").innerHTML = platillo.ingredientes;
-    tarjeta.querySelector(".recipe-price").innerHTML = platillo.precio;
+    const elemTitle = tarjeta.querySelector(".recipe-title");
+    const elemIngr = tarjeta.querySelector(".recipe-ingredients");
+    const elemPrice = tarjeta.querySelector(".recipe-price");
+
+    if (elemTitle) elemTitle.innerHTML = platillo.nombre;
+    if (elemIngr) elemIngr.innerHTML = platillo.ingredientes;
+    if (elemPrice) elemPrice.innerHTML = `$${platillo.precio} MXN`;
   }
 }
 
-const borrarPlatillo = (id) => {
+function borrarPlatillo(id) {
   const platillo = document.querySelector(`.recipe[data-id="${id}"]`);
   if (platillo) {
     platillo.remove();
   }
-};
+}

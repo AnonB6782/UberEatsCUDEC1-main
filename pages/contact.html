@@ -1,50 +1,111 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Food Ninja</title>
-  <!-- materialize icons, css & js -->
-  <link type="text/css" href="../css/materialize.min.css" rel="stylesheet">
+  <title>Food Ninja - Contacto</title>
+
+  <!-- Materialize CSS e Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Estilos Locales y Manifest (Subiendo un nivel con ../) -->
   <link type="text/css" href="../css/styles.css" rel="stylesheet">
-  <script type="text/javascript" src="../js/materialize.min.js"></script>
+  <link rel="manifest" href="../manifest.json">
+
+  <!-- Configuración PWA y Meta Tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="CUber">
+  <meta name="apple-mobile-web-app-title" content="CUber">
+  <meta name="theme-color" content="#172cea">
+  <meta name="msapplication-navbutton-color" content="#172cea">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Iconos PWA apuntando a ../iconos/ -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
+  <link rel="icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
+  <link rel="icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
+  <link rel="icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
+  <link rel="icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
 </head>
 <body class="grey lighten-4">
 
-  <!-- top nav -->
-  <nav class="z-depth-0">
+  <!-- NAVEGACIÓN SUPERIOR -->
+  <nav class="z-depth-0 white">
     <div class="nav-wrapper container">
-      <a href="/">Food<span>Ninja</span></a>
-      <span class="right grey-text text-darken-1">
-        <i class="material-icons sidenav-trigger" data-target="side-menu">menu</i>
-      </span>
+      <a href="../index.html" class="brand-logo green-text text-darken-2" style="font-weight: bold;">Food Ninja</a>
+      
+      <div class="right">
+        <a href="#" data-target="side-menu" class="sidenav-trigger show-on-large grey-text text-darken-1" style="margin: 0 10px; cursor: pointer;">
+          <i class="material-icons">menu</i>
+        </a>
+      </div>
     </div>
   </nav>
 
-  <!-- side nav -->
+  <!-- MENÚ LATERAL -->
   <ul id="side-menu" class="sidenav side-menu">
-    <li><a class="subheader">FOODNINJA</a></li>
-    <li><a href="/" class="waves-effect">Home</a></li>
-    <li><a href="/pages/about.html" class="waves-effect">About</a></li>
+    <li><a class="subheader">UberEatsCUDEC</a></li>
+    <li><a href="../index.html" class="waves-effect"><i class="material-icons">home</i>Inicio</a></li>
+    <li><a href="pedidos.html" class="waves-effect"><i class="material-icons">shopping_basket</i>Generar Pedido</a></li>
+    <li><a href="about.html" class="waves-effect"><i class="material-icons">info</i>Acerca de</a></li>
     <li><div class="divider"></div></li>
-    <li><a href="/pages/contact.html" class="waves-effect">
-      <i class="material-icons">mail_outline</i>Contact</a>
-    </li>
+    <li><a href="contact.html" class="waves-effect"><i class="material-icons">mail_outline</i>Contacto</a></li>
   </ul>
 
-  <!-- content -->
-  <div class="container grey-text">
-    <h5 class="center">Contact Us</h5>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ducimus, porro voluptatum illum veniam eaque sunt sit labore provident eligendi! Voluptate amet suscipit inventore unde maxime atque impedit officia nobis laboriosam!</p>
-    <div class="divider"></div>
-    <h6>Find us at:</h6>
-    <ul>
-      <li>123 Spicy Noodle Road</li>
-      <li>Manchester, UK</li>
-    </ul>
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="container grey-text text-darken-1 section">
+    <h4 class="center-align" style="margin-bottom: 30px; font-weight: 300;">Contacto</h4>
+    
+    <div class="card-panel white" style="border-radius: 8px; padding: 30px;">
+      <p style="font-size: 1.1rem; line-height: 1.6;">
+        ¿Tienes dudas sobre tus pedidos o necesitas soporte con la aplicación? Ponte en contacto con nuestro equipo de atención.
+      </p>
+      
+      <div class="divider" style="margin: 20px 0;"></div>
+      
+      <h6 class="green-text text-darken-2" style="font-weight: bold;">Ubícanos en:</h6>
+      <ul class="collection borderless" style="border: none;">
+        <li class="collection-item" style="border: none; padding-left: 0;">
+          <i class="material-icons left green-text text-darken-2">location_on</i> Av. Universidad CUDEC, Estado de México
+        </li>
+        <li class="collection-item" style="border: none; padding-left: 0;">
+          <i class="material-icons left green-text text-darken-2">email</i> soporte@ubereatscudec.com
+        </li>
+        <li class="collection-item" style="border: none; padding-left: 0;">
+          <i class="material-icons left green-text text-darken-2">phone</i> +52 55 1234 5678
+        </li>
+      </ul>
+    </div>
   </div>
 
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="../js/ui.js"></script>
 </body>
 </html>

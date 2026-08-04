@@ -1,0 +1,47 @@
+{
+  "name": "Food Ninja",
+  "short_name": "CUber",
+  "description": "Aplicación de pedidos de comida e itinerarios gastronómicos en tiempo real.",
+  "start_url": "../index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#172cea",
+  "icons": [
+    {
+      "src": "iconos/icon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "iconos/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "iconos/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "iconos/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "iconos/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "iconos/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

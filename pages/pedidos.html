@@ -4,80 +4,148 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Food Ninja</title>
-  
+  <title>Food Ninja - Pedidos</title>
+
+  <!-- Materialize CSS & Iconos via CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Ruta CSS corregida -->
+  
+  <!-- Leaflet CSS (para el mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Estilos Locales y Manifest (subiendo un nivel) -->
   <link type="text/css" href="../css/styles.css" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <link rel="manifest" href="../manifest.json">
+
+  <!-- Meta Tags PWA -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="CUber">
+  <meta name="apple-mobile-web-app-title" content="CUber">
+  <meta name="theme-color" content="#172cea">
+  <meta name="msapplication-navbutton-color" content="#172cea">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Iconos PWA apuntando a ../iconos/ -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
+  <link rel="icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
+  <link rel="icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
+  <link rel="icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
+  <link rel="icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
+
+  <style>
+    #mapa {
+      height: 250px;
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body class="grey lighten-4">
 
+  <!-- NAVEGACIÓN SUPERIOR -->
   <nav class="z-depth-0 white">
     <div class="nav-wrapper container">
-      <a href="/" class="brand-logo green-text text-darken-2" style="font-weight: bold;">Uber Eats CUDEC</a>
-      <span class="right grey-text text-darken-1">
-        <i class="material-icons sidenav-trigger" data-target="side-menu" style="cursor: pointer;">menu</i>
-      </span>
+      <a href="../index.html" class="brand-logo green-text text-darken-2" style="font-weight: bold;">UBER EATS CUDEC</a>
+      
+      <div class="right">
+        <a href="#" data-target="side-menu" class="sidenav-trigger show-on-large grey-text text-darken-1" style="margin: 0 10px; cursor: pointer;">
+          <i class="material-icons">menu</i>
+        </a>
+      </div>
     </div>
   </nav>
 
+  <!-- MENÚ LATERAL -->
   <ul id="side-menu" class="sidenav side-menu">
     <li><a class="subheader">UberEatsCUDEC</a></li>
-    <li><a href="/" class="waves-effect"><i class="material-icons">home</i>Inicio</a></li>
-    <li><a href="/pages/pedidos.html" class="waves-effect"><i class="material-icons">shopping_basket</i>Generar Pedido</a></li>
-    <li><a href="/pages/about.html" class="waves-effect"><i class="material-icons">info</i>Acerca de</a></li>
+    <li><a href="../index.html" class="waves-effect"><i class="material-icons">home</i>Inicio</a></li>
+    <li><a href="pedidos.html" class="waves-effect"><i class="material-icons">shopping_basket</i>Generar Pedido</a></li>
+    <li><a href="about.html" class="waves-effect"><i class="material-icons">info</i>Acerca de</a></li>
     <li><div class="divider"></div></li>
-    <li><a href="/pages/contact.html" class="waves-effect"><i class="material-icons">mail_outline</i>Contacto</a></li>
+    <li><a href="contact.html" class="waves-effect"><i class="material-icons">mail_outline</i>Contacto</a></li>
   </ul>
 
-  <div class="container grey-text text-darken-1 section">
-    <form id="formularioPedido">
-      <h5>Nuevo Pedido</h5>
-      <div class="divider" style="margin-bottom: 25px;"></div>
+  <!-- FORMULARIO PRINCIPAL DE PEDIDO -->
+  <div class="container section">
+    <h4 class="grey-text text-darken-2" style="font-weight: 300;">Nuevo Pedido</h4>
+    <div class="divider" style="margin-bottom: 30px;"></div>
 
-      <div style="margin-bottom: 30px;">
-        <label for="listaplatillos" class="active" style="font-size: 0.9rem;">Selecciona tu Platillo</label>
-        <select id="listaplatillos" class="browser-default" style="margin-top: 8px;" required>
+    <form id="formularioPedido" class="card-panel white" style="padding: 30px; border-radius: 8px;">
+      
+      <!-- Select de Platillos (ID: listaplatillos) -->
+      <div class="input-field" style="margin-bottom: 30px;">
+        <select id="listaplatillos" required>
           <option value="" disabled selected>-- Elige un platillo de la carta --</option>
         </select>
+        <label>Selecciona tu Platillo</label>
       </div>
 
+      <!-- Nombre del Cliente (ID: txtNombre) -->
       <div class="input-field" style="margin-bottom: 30px;">
-        <input placeholder="ejemplo: Juan Pérez" id="txtNombre" type="text" class="validate" required>
+        <input id="txtNombre" type="text" class="validate" placeholder="ejemplo: Juan Pérez" required>
         <label for="txtNombre" class="active">Nombre del Cliente</label>
       </div>
 
-      <div class="input-field" style="margin-bottom: 30px;">
-        <textarea id="txtDireccion" class="materialize-textarea validate" placeholder="Ingresa tu dirección manual u obténla con el botón" required></textarea>
+      <!-- Dirección de Entrega (ID: txtDireccion) -->
+      <div class="input-field" style="margin-bottom: 10px;">
+        <input id="txtDireccion" type="text" class="validate" placeholder="Ingresa tu dirección manual u obténla con el botón" required>
         <label for="txtDireccion" class="active">Dirección de Entrega</label>
       </div>
 
-      <p id="ubicacion" class="green-text text-darken-2" style="font-weight: bold; margin: 15px 0;"></p>
-
-      <div style="margin-bottom: 25px;">
-        <button id="btnUbicacion" type="button" class="btn-small orange darken-2 waves-effect waves-light">Ubicación</button>
+      <!-- Botón Ubicación & Texto de Ciudad/País (ID: ubicacion) -->
+      <div class="left-align" style="margin-bottom: 15px;">
+        <button id="btnUbicacion" type="button" class="btn-small blue darken-1 waves-effect waves-light">
+          <i class="material-icons left">my_location</i> Usar mi ubicación actual
+        </button>
+        <span id="ubicacion" class="grey-text text-darken-1" style="margin-left: 15px; font-weight: 500;"></span>
       </div>
 
-      <div id="mapa" style="width: 100%; height: 350px; margin-bottom: 30px; border-radius: 4px; border: 1px solid #ccc;"></div>
+      <!-- MAPA (ID: mapa) -->
+      <div id="mapa"></div>
 
-      <div class="input-field center" style="margin-top: 35px; margin-bottom: 20px;">
-        <button id="btnGuardar" type="submit" class="btn green waves-effect waves-light">Guardar Pedido</button>
+      <!-- Botón de Confirmación -->
+      <div class="center" style="margin-top: 20px;">
+        <button type="submit" class="btn green waves-effect waves-light">
+          Confirmar Pedido <i class="material-icons right">send</i>
+        </button>
       </div>
     </form>
   </div>
 
+  <!-- SCRIPTS EN ORDEN CORRECTO -->
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-firestore.js"></script>
-  
-  <!-- Rutas JS apuntando correctamente subiendo un nivel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <script src="../js/firebase.js"></script>
   <script src="../js/pedidos.js"></script>
-
 </body>
 </html>

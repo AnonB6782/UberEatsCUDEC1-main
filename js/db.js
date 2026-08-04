@@ -1,53 +1,43 @@
-let contenidoLista = "";
-
- db.collection("platillos").onSnapshot((coleccion) => {
-     coleccion.docChanges().forEach((registro) => {
-         if (registro.type === "added") {
-            mostrarPlatillo(registro.doc.data(), registro.doc.id);
-         }
-         if (registro.type === "modified") {
-             actualizarPlatillo(registro.doc.data(), registro.doc.id);
-         }
-         if (registro.type === "removed") { 
-             borrarPlatillo(registro.doc.id);
-         }
-     });
- });
-
-const formularioAgregar = document.querySelector("form");
-formularioAgregar.addEventListener("submit", (e) => {
-    e.preventDefault();
-const platilloNuevo = {
-    nombre: formularioAgregar.title.value,
-    ingredientes: formularioAgregar.ingredients.value,
-    precio: formularioAgregar.price.value
+// =========================================================
+// 1. ESCUCHAR FIRESTORE EN TIEMPO REAL
+// =========================================================
+if (typeof db !== 'undefined') {
+  db.collection("platillos").onSnapshot((coleccion) => {
+    coleccion.docChanges().forEach((registro) => {
+      // Invocamos las funciones de UI que se declararon en index.js
+      if (registro.type === "added") {
+        mostrarPlatillo(registro.doc.data(), registro.doc.id);
+      }
+      if (registro.type === "modified") {
+        actualizarPlatillo(registro.doc.data(), registro.doc.id);
+      }
+      if (registro.type === "removed") {
+        borrarPlatillo(registro.doc.id);
+      }
+    });
+  });
 }
-db.collection("platillos").add(platilloNuevo)
-.catch((error) => {
-    console.error(error);
-    alert("Error al agregar el platillo");
-});
-    formularioAgregar.title.value = "";
-    formularioAgregar.ingredients.value = "";
-    formularioAgregar.price.value = "";
-    alert("Platillo agregado correctamente");
-});
 
+// =========================================================
+// 2. ELIMINAR PLATILLO EN FIRESTORE AL HACER CLIC
+// =========================================================
+const contenedorRecetasDB = document.querySelector(".recipes");
 
-const platilloBorrar = document.querySelector(".recipes");
-platilloBorrar.addEventListener("click", (e) => {
+if (contenedorRecetasDB) {
+  contenedorRecetasDB.addEventListener("click", (e) => {
     if (e.target.tagName === "I") {
-        const id = e.target.getAttribute("data-id");
-        const confirmar = confirm("¿Seguro que deseas eliminar este platillo?");
-        if (confirmar) {
-            db.collection("platillos").doc(id).delete()
-            .then(() => {
-                alert("Platillo eliminado correctamente");
-            })
-            .catch((error) => {
-                console.error(error);
-                alert("Error al eliminar el platillo");
-            });
-        }
+      const id = e.target.getAttribute("data-id");
+      
+      if (id && confirm("¿Seguro que deseas eliminar este platillo?")) {
+        db.collection("platillos").doc(id).delete()
+          .then(() => {
+            M.toast({ html: 'Platillo eliminado correctamente', classes: 'rounded green' });
+          })
+          .catch((error) => {
+            console.error("Error al eliminar el platillo:", error);
+            M.toast({ html: 'Error al eliminar el platillo', classes: 'rounded red' });
+          });
+      }
     }
-});
+  });
+}
