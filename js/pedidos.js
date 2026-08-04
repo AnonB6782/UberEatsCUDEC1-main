@@ -31,14 +31,19 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
 
       const selectPlatillo = document.getElementById("listaplatillos");
+      if (!selectPlatillo || !selectPlatillo.value) {
+        M.toast({ html: 'Por favor selecciona un platillo', classes: 'rounded orange' });
+        return;
+      }
+
       const idPlatillo = selectPlatillo.value;
       const nombrePlatillo = selectPlatillo.options[selectPlatillo.selectedIndex].text;
 
       const pedidoNuevo = {
         platilloId: idPlatillo,
         platilloNombre: nombrePlatillo,
-        cliente: document.getElementById("txtNombre").value,
-        direccion: document.getElementById("txtDireccion").value,
+        cliente: document.getElementById("txtNombre") ? document.getElementById("txtNombre").value : "",
+        direccion: document.getElementById("txtDireccion") ? document.getElementById("txtDireccion").value : "",
         fecha: new Date().toISOString()
       };
 
@@ -52,7 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (txtUbicacion) txtUbicacion.innerHTML = "";
             
             // Re-inicializamos la vista del select tras limpiar el formulario
-            M.FormSelect.init(selectPlatillo);
+            if (typeof M !== 'undefined' && M.FormSelect) {
+              M.FormSelect.init(selectPlatillo);
+            }
           })
           .catch((err) => {
             console.error("Error al guardar pedido: ", err);
@@ -64,11 +71,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =========================================================
-// MONITOREO EN TIEMPO REAL DE FIRESTORE (PLATILLOS / RECIPES)
+// MONITOREO EN TIEMPO REAL DE FIRESTORE (PLATILLOS)
 // =========================================================
 if (typeof db !== 'undefined') {
-  // Se lee la colección 'recipes' (o 'platillos', ajusta según tu base de datos)
-  db.collection("recipes").onSnapshot((coleccion) => {
+  // Cambiado 'recipes' por 'platillos' para coincidir con index.js
+  db.collection("platillos").onSnapshot((coleccion) => {
     contenidoLista = "<option value='' disabled selected>-- Elige un platillo de la carta --</option>";
     
     coleccion.forEach((registro) => {
@@ -84,15 +91,16 @@ if (typeof db !== 'undefined') {
         M.FormSelect.init(selectElement);
       }
     }
+  }, (err) => {
+    console.error("Error al obtener platillos de Firestore: ", err);
   });
 }
 
 function agregarALista(platillo, id) {
-  // Soportar ambas nomenclaturas: (title/price) de 'recipes' o (nombre/precio) de 'platillos'
-  const nombre = platillo.title || platillo.nombre;
-  const precio = platillo.price !== undefined ? platillo.price : platillo.precio;
+  // Soporta campos 'nombre/precio' o 'title/price'
+  const nombre = platillo.nombre || platillo.title;
+  const precio = platillo.precio !== undefined ? platillo.precio : platillo.price;
 
-  // Solo agregar si el nombre y el precio existen
   if (nombre && precio !== undefined) {
     contenidoLista += `<option value='${id}'>${nombre} - $${precio} MXN</option>`;
   }
@@ -105,7 +113,6 @@ function exito(posicion) {
   let latitud = posicion.coords.latitude;
   let longitud = posicion.coords.longitude;
 
-  // Consulta de dirección mediante Nominatim (Reverse Geocoding)
   fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json`, {
     headers: {
       'User-Agent': 'UberEatsCUDECEnrique (enrique_udec@hotmail.com)'
@@ -116,31 +123,27 @@ function exito(posicion) {
     let ciudad = data.address.city || data.address.town || data.address.village || "No especificada";
     let pais = data.address.country || "No especificado";
     
-    // Muestra Ciudad y País en el span #ubicacion
     const elemUbicacion = document.getElementById("ubicacion");
     if (elemUbicacion) {
       elemUbicacion.innerHTML = `${ciudad}, ${pais}`;
     }
     
-    // Autocompleta el input de dirección
     const direccionCaja = document.getElementById("txtDireccion");
     if (direccionCaja) {
       direccionCaja.value = data.display_name;
-      M.updateTextFields();
+      if (typeof M !== 'undefined') {
+        M.updateTextFields();
+      }
     }
 
-    // Renderiza o actualiza el mapa Leaflet en el contenedor #mapa
     const contenedorMapa = document.getElementById('mapa');
     if (contenedorMapa && typeof L !== 'undefined') {
-      
       if (miMapa) {
-        // Si el mapa ya existe, simplemente lo reubicamos y actualizamos el pin
         miMapa.setView([latitud, longitud], 15);
         L.marker([latitud, longitud]).addTo(miMapa)
           .bindPopup('<b>Ubicación de entrega</b>')
           .openPopup();
       } else {
-        // Si se crea por primera vez
         miMapa = L.map('mapa').setView([latitud, longitud], 15);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
