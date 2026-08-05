@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   
-  <!-- Estilos y Manifest (Note el ../ para subir un nivel) -->
-  <link type="text/css" href="../css/styles.css" rel="stylesheet">
-  <link rel="manifest" href="../manifest.json">
+  <!-- Estilos y Manifest (Rutas corregidas a directorio raíz ./) -->
+  <link type="text/css" href="./css/styles.css" rel="stylesheet">
+  <link rel="manifest" href="./manifest.json">
 
   <!-- Meta Tags PWA -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -23,35 +23,10 @@
   <meta name="msapplication-navbutton-color" content="#172cea">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Iconos desde ../iconos/ -->
-  <link rel="icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
+  <!-- Iconos PWA (Rutas corregidas y optimizadas) -->
+  <link rel="apple-touch-icon" href="./iconos/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./iconos/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./iconos/icon-512x512.png">
 </head>
 <body class="grey lighten-4">
 
@@ -142,17 +117,16 @@
   <!-- ========================================================================= -->
 
   <!-- 1. Firebase (v6.0.1) -->
-<!-- Scripts de Firebase y Librerías -->
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-firestore.js"></script>
 
-  <!-- JS de Materialize -->
+  <!-- JS de Materialize (Nota: revisa si tu archivo local se llama materializa.min.js o materialize.min.js) -->
   <script src="js/materializa.min.js"></script>
 
   <!-- Scripts de la aplicación -->
   <script src="js/firebase.js"></script>
-  <script src="js/index.js"></script>  <!-- 1. Carga UI, cámara y listener del form -->
-  <script src="js/db.js"></script>     <!-- 2. Carga escuchador onSnapshot -->
+  <script src="js/index.js"></script>
+  <script src="js/db.js"></script>
 
   <!-- Registro del Service Worker -->
   <script>
