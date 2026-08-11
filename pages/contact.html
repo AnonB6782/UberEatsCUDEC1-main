@@ -23,35 +23,10 @@
   <meta name="msapplication-navbutton-color" content="#172cea">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Iconos PWA apuntando a ../iconos/ -->
-  <link rel="icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <!-- Iconos PWA esenciales -->
+  <link rel="apple-touch-icon" href="../iconos/icon-192x192.png">
   <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
   <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
 </head>
 <body class="grey lighten-4">
 
@@ -68,7 +43,7 @@
     </div>
   </nav>
 
-  <!-- MENÚ LATERAL -->
+  <!-- MENÚ LATERAL DE NAVEGACIÓN -->
   <ul id="side-menu" class="sidenav side-menu">
     <li><a class="subheader">UberEatsCUDEC</a></li>
     <li><a href="../index.html" class="waves-effect"><i class="material-icons">home</i>Inicio</a></li>
@@ -104,8 +79,19 @@
     </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS CON RUTAS RELATIVAS CORRECTAS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="../js/ui.js"></script>
+  <script src="../js/app.js"></script>
+
+  <!-- INICIALIZACIÓN DIRECTA DEL MENÚ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menus = document.querySelectorAll('.sidenav');
+      if (typeof M !== 'undefined') {
+        M.Sidenav.init(menus, { edge: 'right' });
+      }
+    });
+  </script>
 </body>
 </html>

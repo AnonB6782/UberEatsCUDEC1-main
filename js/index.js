@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // 3. LÓGICA PARA ENCENDER LA CÁMARA TRASERA
   if (bntFoto) {
     bntFoto.addEventListener("click", function() {
+      // ---> NUEVO: Mostrar cuadro de video y ocultar foto previa <---
+      const contenedorCamara = document.getElementById('camara');
+      const preview = document.getElementById('fotoPreview');
+      if (contenedorCamara) contenedorCamara.style.display = 'block';
+      if (preview) preview.style.display = 'none';
+
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
             video: {
@@ -104,6 +110,12 @@ document.addEventListener('DOMContentLoaded', function() {
       video.srcObject = null;
     }
     streaming = false;
+
+    // ---> NUEVO: Ocultar el recuadro negro (video) de la cámara <---
+    const contenedorCamara = document.getElementById('camara');
+    if (contenedorCamara) {
+      contenedorCamara.style.display = 'none';
+    }
   }
 
   // Procesar la imagen a Base64
@@ -117,13 +129,17 @@ document.addEventListener('DOMContentLoaded', function() {
       const fotoCompleta = canvas.toDataURL("image/png");
       
       const preview = document.getElementById("fotoPreview");
-      if (preview) preview.setAttribute("src", fotoCompleta);
+      if (preview) {
+        preview.setAttribute("src", fotoCompleta);
+        // ---> NUEVO: Mostrar la foto capturada <---
+        preview.style.display = 'block'; 
+      }
       
       const base64Puro = fotoCompleta.replace("data:image/png;base64,", "").trim();
       const inputFoto = document.getElementById("foto");
       if (inputFoto) inputFoto.value = base64Puro;
 
-      apagarCamara();
+      apagarCamara(); // Esto ahora ocultará el cuadro negro automáticamente
     } else {
       limpiarFoto();
     }
@@ -138,7 +154,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const fotoFinal = canvas.toDataURL("image/png");
     const preview = document.getElementById("fotoPreview");
-    if (preview) preview.setAttribute("src", fotoFinal);
+    if (preview) {
+      preview.setAttribute("src", fotoFinal);
+      preview.style.display = 'block';
+    }
     
     const inputFoto = document.getElementById("foto");
     if (inputFoto) inputFoto.value = "";
@@ -171,7 +190,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (inputFoto) inputFoto.value = "";
             const preview = document.getElementById('fotoPreview');
-            if (preview) preview.setAttribute("src", "");
+            if (preview) {
+              preview.setAttribute("src", "");
+              // ---> NUEVO: Ocultar la foto tras guardar el platillo exitosamente <---
+              preview.style.display = 'none'; 
+            }
 
             const elementoForm = document.getElementById('side-form'); 
             if (elementoForm && typeof M !== 'undefined') {

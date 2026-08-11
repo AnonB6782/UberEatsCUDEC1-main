@@ -23,35 +23,10 @@
   <meta name="msapplication-navbutton-color" content="#172cea">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Iconos PWA apuntando a ../iconos/ -->
-  <link rel="icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="16x16" href="../iconos/icon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="32x32" href="../iconos/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="../iconos/icon-48x48.png">
-  <link rel="icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="../iconos/icon-64x64.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="../iconos/icon-96x96.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="128x128" href="../iconos/icon-128x128.png">
-  <link rel="icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="../iconos/icon-144x144.png">
-  <link rel="icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="../iconos/icon-152x152.png">
-  <link rel="icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../iconos/icon-180x180.png">
+  <!-- Iconos PWA esenciales -->
+  <link rel="apple-touch-icon" href="../iconos/icon-192x192.png">
   <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="../iconos/icon-192x192-maskable.png">
-  <link rel="icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="384x384" href="../iconos/icon-384x384.png">
   <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
-  <link rel="apple-touch-icon" type="image/png" sizes="512x512" href="../iconos/icon-512x512-maskable.png">
 </head>
 <body class="grey lighten-4">
 
@@ -80,19 +55,67 @@
 
   <!-- CONTENIDO PRINCIPAL -->
   <div class="container grey-text text-darken-1 section">
-    <h4 class="center-align" style="margin-bottom: 30px; font-weight: 300;">Acerca de Food Ninja</h4>
-    <div class="card-panel white" style="border-radius: 8px; padding: 30px;">
-      <p style="font-size: 1.1rem; line-height: 1.6;">
-        Bienvenido a <strong>Food Ninja / UberEatsCUDEC</strong>, la plataforma rápida e intuitiva para explorar el menú del día, realizar tus pedidos gastronómicos y gestionarlos en tiempo real.
-      </p>
-      <p style="font-size: 1.1rem; line-height: 1.6;">
-        Diseñada como una Progressive Web App (PWA), esta aplicación te permite ordenar tus platillos favoritos, tomar fotografías directas desde tu cámara y ubicar la entrega en el mapa, incluso sin una conexión a internet continua.
-      </p>
+    <div class="card-panel white" style="border-radius: 12px; padding: 30px 20px;">
+      
+      <!-- 1. INFORMACIÓN DE LA APLICACIÓN -->
+      <section class="center-align" style="margin-bottom: 25px;">
+        <img src="../iconos/icon-192x192.png" alt="Logotipo Food Ninja" style="width: 100px; height: 100px; border-radius: 20%; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+        
+        <h4 class="green-text text-darken-2" style="font-weight: bold; margin-top: 15px; margin-bottom: 5px;">Food Ninja</h4>
+        <p class="grey-text text-darken-1" style="font-weight: 500; font-size: 1.1rem; margin-top: 0;">UberEatsCUDEC</p>
+        
+        <span class="chip blue lighten-5 blue-text text-darken-3" style="font-weight: bold;">
+          Versión 2.4.1
+        </span>
+      </section>
+
+      <div class="divider" style="margin: 25px 0;"></div>
+
+      <!-- 2. DESCRIPCIÓN DE LA APLICACIÓN -->
+      <section style="margin-bottom: 25px;">
+        <h6 class="green-text text-darken-2" style="font-weight: bold; display: flex; align-items: center;">
+          <i class="material-icons" style="margin-right: 8px;">description</i> Descripción de la aplicación
+        </h6>
+        <p style="line-height: 1.6; text-align: justify; margin-top: 10px;">
+          <strong>¿Qué hace la app?</strong> Permite a la comunidad universitaria consultar el menú del día, registrar nuevos platillos capturando imágenes mediante la cámara del dispositivo y gestionar pedidos gastronómicos en tiempo real.
+        </p>
+        <p style="line-height: 1.6; text-align: justify;">
+          <strong>¿Qué problema resuelve?</strong> Optimiza los tiempos de espera y agiliza la toma de pedidos en las cafeterías del campus, funcionando como Progressive Web App (PWA) con soporte offline y disponibilidad sin requerir una tienda de aplicaciones externa.
+        </p>
+      </section>
+
+      <div class="divider" style="margin: 25px 0;"></div>
+
+      <!-- 3. SOPORTE Y CONTACTO -->
+      <section>
+        <h6 class="green-text text-darken-2" style="font-weight: bold; display: flex; align-items: center;">
+          <i class="material-icons" style="margin-right: 8px;">support_agent</i> Soporte y Contacto
+        </h6>
+        <p style="margin-bottom: 12px; margin-top: 10px;">
+          Si experimentas inconvenientes técnicos o tienes sugerencias sobre la plataforma:
+        </p>
+        <div class="card-panel grey lighten-5 z-depth-0" style="border: 1px dashed #b2dfdb; border-radius: 8px; padding: 12px 15px;">
+          <a href="mailto:soporte.foodninja@cudec.edu.mx" class="green-text text-darken-3" style="font-weight: bold; display: flex; align-items: center; word-break: break-all;">
+            <i class="material-icons" style="margin-right: 10px;">email</i>
+            soporte.foodninja@cudec.edu.mx
+          </a>
+        </div>
+      </section>
+
     </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS EN ORDEN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="../js/ui.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menus = document.querySelectorAll('.sidenav');
+      if (typeof M !== 'undefined') {
+        M.Sidenav.init(menus, { edge: 'right' });
+      }
+    });
+  </script>
 </body>
 </html>

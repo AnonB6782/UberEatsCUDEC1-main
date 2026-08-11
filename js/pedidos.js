@@ -49,8 +49,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (typeof db !== 'undefined') {
         db.collection("pedidos1").add(pedidoNuevo)
-          .then(() => {
+          .then((docRef) => {
             M.toast({ html: '¡Pedido registrado con éxito!', classes: 'rounded green' });
+
+            // Generación del código QR con los datos del pedido registrado
+            if (typeof QRCode !== 'undefined') {
+              const contenedorQR = document.getElementById("qrcode");
+              const seccionQR = document.getElementById("seccionQR");
+
+              if (contenedorQR) {
+                // Limpiar QR previo
+                contenedorQR.innerHTML = "";
+
+                // Objeto para el QR incluyendo el ID de la base de datos
+                const datosQR = {
+                  idPedido: docRef.id,
+                  cliente: pedidoNuevo.cliente,
+                  platillo: pedidoNuevo.platilloNombre,
+                  fecha: pedidoNuevo.fecha
+                };
+
+                // Instancia de QRCode
+                new QRCode(contenedorQR, {
+                  text: JSON.stringify(datosQR),
+                  width: 180,
+                  height: 180,
+                  colorDark: "#000000",
+                  colorLight: "#ffffff",
+                  correctLevel: QRCode.CorrectLevel.H
+                });
+
+                if (seccionQR) seccionQR.style.display = "block";
+              }
+            }
+            
             formularioPedido.reset();
             
             const txtUbicacion = document.getElementById("ubicacion");
@@ -74,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // MONITOREO EN TIEMPO REAL DE FIRESTORE (PLATILLOS)
 // =========================================================
 if (typeof db !== 'undefined') {
-  // Cambiado 'recipes' por 'platillos' para coincidir con index.js
   db.collection("platillos").onSnapshot((coleccion) => {
     contenidoLista = "<option value='' disabled selected>-- Elige un platillo de la carta --</option>";
     
@@ -97,7 +128,6 @@ if (typeof db !== 'undefined') {
 }
 
 function agregarALista(platillo, id) {
-  // Soporta campos 'nombre/precio' o 'title/price'
   const nombre = platillo.nombre || platillo.title;
   const precio = platillo.precio !== undefined ? platillo.precio : platillo.price;
 
