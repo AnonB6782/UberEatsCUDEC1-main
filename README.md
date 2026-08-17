@@ -76,8 +76,28 @@ UberEatsCUDEC1-main/
 ├── sw.js                   # Service Worker para precaché y soporte offline
 └── README.md               # Documentación del proyecto!
 ```
-![Captura de pantalla 2026-08-14 202020.png](../_resources/Captura%20de%20pantalla%202026-08-14%20202020.png)
-![Captura de pantalla 2026-08-14 202102.png](../_resources/Captura%20de%20pantalla%202026-08-14%20202102.png) 
-![Captura de pantalla 2026-08-14 202323.png](../_resources/Captura%20de%20pantalla%202026-08-14%20202323.png) 
-![Captura de pantalla 2026-08-14 202344.png](../_resources/Captura%20de%20pantalla%202026-08-14%20202344.png) 
-![Captura de pantalla 2026-08-14 202358.png](../_resources/Captura%20de%20pantalla%202026-08-14%20202358.png)
+## 7. Evidencias / Capturas de Pantalla
+
+| Pantalla | Vista Previa |
+| :--- | :---: |
+| **Inicio** | ![Inicio](./evidencias/inicio.png) |
+| **Registrar Platillo** | ![Registrar Platillo](./evidencias/registrar-platillo.png) |
+| **Realizar Pedido** | ![Realizar Pedido](./evidencias/realizar-pedido.png) |
+| **Acerca de** | ![Acerca de](./evidencias/acerca.png) |
+| **Contacto** | ![Contacto](./evidencias/contacto.png) 
+---
+
+## 8. Base de Datos
+
+* **Motor Utilizado:** Cloud Firestore (Firebase) - Base de datos NoSQL orientada a documentos en tiempo real.
+* **Colecciones Principales:**
+  * `platillos`: Almacena la información de los productos del menú (nombre, descripción, precio, URL de la imagen/captura).
+  * `pedidos`: Almacena el detalle de las compras realizadas por los usuarios (lista de platillos, fecha/hora, estado del pedido, código QR generado, total).
+
+---
+
+## 9. Licencia
+
+Este proyecto fue desarrollado con fines académicos como parte de la carrera de **Ingeniería en Sistemas Computacionales**, para la materia **Taller de programación 2**, del grupo **09/ISC - 182** en el **Centro Universitario CUDEC**.
+
+---
